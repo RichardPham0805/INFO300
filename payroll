@@ -1,0 +1,61 @@
+//Richard Pham INFO 300 Payroll.js
+
+var readLineSync = require('readline-sync'); 
+
+var employees = []; 
+
+for (var i = 1; i <= 3; i++) {
+
+
+    var name = readLineSync.question("Enter employee name: "); 
+    var wage = readLineSync.questionFloat("Enter hourly wage: "); 
+    var hours = readLineSync.questionFloat("Enter hours worked: "); 
+
+    if (wage <= 0 || hours < 0 || hours > 80) {
+        console.log("Invalid input. Wage must be positive and hours between 0 and 80.");
+        i--; 
+    } else {
+
+        var regularHours = 0;
+        var overtimeHours = 0;
+
+        if (hours > 40) {
+            regularHours = 40;
+            overtimeHours = hours - 40;
+        } else {
+            regularHours = hours;
+        }
+
+        var regularPay = regularHours * wage;
+        var overtimePay = overtimeHours * wage * 1.5;
+        var totalPay = regularPay + overtimePay;
+
+        employees.push({
+            name: name,
+            hours: hours,
+            regularPay: regularPay,
+            overtimePay: overtimePay,
+            totalPay: totalPay
+        });
+    }
+}
+
+var highestPaid = employees[0];
+
+for (var j = 1; j < employees.length; j++) {
+    if (employees[j].totalPay > highestPaid.totalPay) {
+        highestPaid = employees[j];
+    }
+}
+
+
+for (var k = 0; k < employees.length; k++) {
+
+    console.log("\nName: " + employees[k].name);
+    console.log("Total Hours: " + employees[k].hours);
+    console.log("Regular Pay: $" + employees[k].regularPay.toFixed(2));
+    console.log("Overtime Pay: $" + employees[k].overtimePay.toFixed(2));
+    console.log("Total Pay: $" + employees[k].totalPay.toFixed(2));
+}
+
+console.log("Highest Paid Employee: " + highestPaid.name + " ($" + highestPaid.totalPay.toFixed(2) + ")");
